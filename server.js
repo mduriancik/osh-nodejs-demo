@@ -7,18 +7,22 @@ const fs = require('fs');
 // Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
-const CFG_MAP = '/etc/osh-nodejs-demo/osh-nd-cfgmap.config';
 
 // App
 const app = express();
 app.get('/', function (req, res) {
   let env = JSON.stringify(process.env, null, ' ');
   let version = require('./package.json').version;
+
   // let cfg = fs.readFileSync(CFG_MAP).toString();
-  let cfgDir = fs.readdirSync('/etc/osh-nodejs-demo');
-  if (cfgDir && cfgDir.length>0) {
-    var cfg =  fs.readFileSync('/etc/osh-nodejs-demo/' + cfgDir[2]).toString();
+  let cfgmapVolume = fs.readdirSync('/etc/osh-nodejs-demo');
+  let cfg = '?';
+  try{
+    cfg =  fs.readFileSync('/etc/osh-nodejs-demo/example.property.file');
+  } catch (err){
+    console.error(err);
   }
+
   res.send(
     `<html><body>
     <h3>System Infos (v: ${version})</h3>
@@ -30,10 +34,25 @@ app.get('/', function (req, res) {
     <b>env: </b>
     <pre>${env}</pre><br>
     <b>cfg dir: </b>
-    <pre>${cfgDir}</pre>
+    <pre>${cfgmapVolume}</pre>
     <b>cfg: </b>
     <pre>${cfg}</pre>
     </body></html>`);
+});
+
+app.get('/ls', function (req, res) {
+  console.log('query(/ls):', req.query);
+  let dir = fs.readdirSync(req.query.path);
+  res.send(dir);
+});
+
+
+app.get('/more', function (req, res) {
+  console.log('query(/more):', req.query.path);
+  // res.set('Content-Type', 'text/plain');
+  res.sendFile(req.query.path);
+  // let file = fs.readFileSync(req.query.path).toString();
+  // res.send(file);
 });
 
 app.listen(PORT, HOST);
