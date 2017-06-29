@@ -14,7 +14,11 @@ const app = express();
 app.get('/', function (req, res) {
   let env = JSON.stringify(process.env, null, ' ');
   let version = require('./package.json').version;
-  let cfg = fs.readFileSync(CFG_MAP).toString();
+  // let cfg = fs.readFileSync(CFG_MAP).toString();
+  let cfgDir = fs.readdirSync('/etc/osh-nodejs-demo/');
+  if (cfgDir && cfgDir.length===1) {
+    var cfg =  fs.readFileSync('/etc/osh-nodejs-demo/' + cfgDir[0]).toString();
+  }
   res.send(
     `<html><body>
     <h3>System Infos (v: ${version})</h3>
@@ -25,6 +29,8 @@ app.get('/', function (req, res) {
     <b>cpus: </b> <pre>${JSON.stringify(os.cpus(), null, ' ')}</pre><br>
     <b>env: </b>
     <pre>${env}</pre><br>
+    <b>cfg dir: </b>
+    <pre>${cfgDir}</pre>
     <b>cfg: </b>
     <pre>${cfg}</pre>
     </body></html>`);
