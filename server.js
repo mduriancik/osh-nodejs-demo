@@ -2,16 +2,19 @@
 
 const express = require('express');
 const os = require('os');
+const fs = require('fs');
 
 // Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
+const CFG_MAP = '/etc/osh-nodejs-demo/osh-nd-cfgmap.config';
 
 // App
 const app = express();
 app.get('/', function (req, res) {
   let env = JSON.stringify(process.env, null, ' ');
   let version = require('./package.json').version;
+  let cfg = fs.readFileSync(CFG_MAP).toString();
   res.send(
     `<html><body>
     <h3>System Infos (v: ${version})</h3>
@@ -21,7 +24,9 @@ app.get('/', function (req, res) {
       <pre>${JSON.stringify(os.networkInterfaces(), null, ' ')}</pre><br>
     <b>cpus: </b> <pre>${JSON.stringify(os.cpus(), null, ' ')}</pre><br>
     <b>env: </b>
-    <pre>${env}</pre>
+    <pre>${env}</pre><br>
+    <b>cfg: </b>
+    <pre>${cfg}</pre>
     </body></html>`);
 });
 
