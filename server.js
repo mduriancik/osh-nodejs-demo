@@ -15,9 +15,9 @@ app.get('/', function (req, res) {
   let env = JSON.stringify(process.env, null, ' ');
   let version = require('./package.json').version;
   // let cfg = fs.readFileSync(CFG_MAP).toString();
-  let cfgDir = fs.readdirSync('/etc/osh-nodejs-demo/osh-nd-cfgmap-key');
+  let cfgDir = fs.readdirSync('/etc/osh-nodejs-demo');
   if (cfgDir && cfgDir.length>0) {
-    var cfg =  fs.readFileSync('/etc/osh-nodejs-demo/' + cfgDir[0]).toString();
+    var cfg =  fs.readFileSync('/etc/osh-nodejs-demo/' + cfgDir[2]).toString();
   }
   res.send(
     `<html><body>
