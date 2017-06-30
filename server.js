@@ -34,9 +34,9 @@ app.get('/', function (req, res) {
     <b>env: </b>
     <pre>${env}</pre><br>
     <b>cfg dir: </b>
-    <pre>${cfgmapVolume}</pre>
+    <a href="/ls?path=/etc/osh-nodejs-demo">list directory ...</a><br>
     <b>cfg: </b>
-    <pre>${cfg}</pre>
+    <a href="/more?path=/etc/osh-nodejs-demo/exemple.property.file">view config ...</a>
     </body></html>`);
 });
 
